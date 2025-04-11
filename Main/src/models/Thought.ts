@@ -1,22 +1,22 @@
 import { Schema, model, type Document, Types } from 'mongoose';
 
-export interface IReaction {
+export interface Reaction {
   reactionId: Types.ObjectId;
   reactionBody: string;
   username: string;
   createdAt: Date;
 }
 
-export interface IThought extends Document {
+export interface Thought extends Document {
   thoughtText: string;
   createdAt: Date;
   username: string;
-  reactions: IReaction[];
+  reactions: Reaction[];
   reactionCount: number;
 }
 
 // Reaction Schema (subdocument)
-const reactionSchema = new Schema<IReaction>(
+const reactionSchema = new Schema<Reaction>(
   {
     reactionId: {
       type: Schema.Types.ObjectId,
@@ -47,7 +47,7 @@ const reactionSchema = new Schema<IReaction>(
 );
 
 // Thought Schema
-const thoughtSchema = new Schema<IThought>(
+const thoughtSchema = new Schema<Thought>(
   {
     thoughtText: {
       type: String,
@@ -78,11 +78,11 @@ const thoughtSchema = new Schema<IThought>(
 );
 
 // Virtual property: reactionCount
-thoughtSchema.virtual('reactionCount').get(function (this: IThought) {
+thoughtSchema.virtual('reactionCount').get(function (this: Thought) {
   return this.reactions.length;
 });
 
 // Create the Thought model using the thoughtSchema
-const Thought = model<IThought>('Thought', thoughtSchema);
+const Thought = model<Thought>('Thought', thoughtSchema);
 
 export default Thought;

@@ -99,11 +99,11 @@ const appDescriptions = [
 export const getRandomArrItem = (arr: any) => arr[Math.floor(Math.random() * arr.length)];
 
 // Gets a random full name
-export const getRandomName =() =>
+export const getRandomUser =() =>
   `${getRandomArrItem(names)} ${getRandomArrItem(names)}`;
 
 // Function to generate random assignments that we can add to student object.
-export const getRandomAssignments = (int: number) => {
+export const getRandomReactions = (int: number) => {
   const results = [];
   for (let i = 0; i < int; i++) {
     results.push({

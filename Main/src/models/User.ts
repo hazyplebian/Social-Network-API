@@ -1,6 +1,6 @@
 import { Schema, model, type Document } from 'mongoose';
 
-export interface IUser extends Document {
+export interface User extends Document {
   username: string;
   email: string;
   thoughts: Schema.Types.ObjectId[];
@@ -8,7 +8,7 @@ export interface IUser extends Document {
   friendCount: number;
 }
 
-const userSchema = new Schema<IUser>(
+const userSchema = new Schema<User>(
   {
     username: {
       type: String,
@@ -45,10 +45,10 @@ const userSchema = new Schema<IUser>(
 );
 
 // Virtual property to get the count of friends
-userSchema.virtual('friendCount').get(function (this: IUser) {
+userSchema.virtual('friendCount').get(function (this: User) {
   return this.friends.length;
 });
 
-const User = model<IUser>('User', userSchema);
+const User = model<User>('User', userSchema);
 
 export default User;
