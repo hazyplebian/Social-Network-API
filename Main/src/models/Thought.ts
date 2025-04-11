@@ -34,8 +34,6 @@ const reactionSchema = new Schema<Reaction>(
     createdAt: {
       type: Date,
       default: Date.now,
-      // Getter to format the date on query. You can customize the format as needed.
-      get: (timestamp: Date) => new Date(timestamp).toLocaleString()
     }
   },
   {
@@ -58,8 +56,6 @@ const thoughtSchema = new Schema<Thought>(
     createdAt: {
       type: Date,
       default: Date.now,
-      // Getter method to format the timestamp
-      get: (timestamp: Date) => new Date(timestamp).toLocaleString()
     },
     username: {
       type: String,
