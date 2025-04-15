@@ -34,6 +34,7 @@ const reactionSchema = new Schema<Reaction>(
     createdAt: {
       type: Date,
       default: Date.now,
+  
     }
   },
   {

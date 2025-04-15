@@ -96,7 +96,7 @@ export const deleteUser = async (req: Request, res: Response) => {
         const user = await User.findOneAndDelete({ _id: req.params.userId });
 
         if (!user) {
-            return res.status(404).json({ message: 'No such user exists' });
+            res.status(404).json({ message: 'No such user exists' });
         }
 
         const thought = await Thought.findOneAndUpdate(
@@ -106,15 +106,15 @@ export const deleteUser = async (req: Request, res: Response) => {
         );
 
         if (!thought) {
-            return res.status(404).json({
+            res.status(404).json({
                 message: 'User deleted, but no thoughts found',
             });
         }
 
-        return res.json({ message: 'User successfully deleted' });
+        res.json({ message: 'User successfully deleted' });
     } catch (err) {
         console.log(err);
-        return res.status(500).json(err);
+        res.status(500).json(err);
     }
 }
 
@@ -136,14 +136,14 @@ export const addReaction = async (req: Request, res: Response) => {
         );
 
         if (!user) {
-            return res
+            res
                 .status(404)
                 .json({ message: 'No user found with that ID :(' });
         }
 
-        return res.json(user);
+        res.json(user);
     } catch (err) {
-        return res.status(500).json(err);
+        res.status(500).json(err);
     }
 }
 
@@ -163,13 +163,13 @@ export const removeReaction = async (req: Request, res: Response) => {
         );
 
         if (!user) {
-            return res
+            res
                 .status(404)
                 .json({ message: 'No user found with that ID :(' });
         }
 
-        return res.json(user);
+        res.json(user);
     } catch (err) {
-        return res.status(500).json(err);
+        res.status(500).json(err);
     }
 }

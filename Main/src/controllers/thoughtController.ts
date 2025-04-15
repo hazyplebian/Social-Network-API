@@ -95,8 +95,13 @@ export const deleteThought = async (req: Request, res: Response) => {
           message: 'No thought with that ID'
         });
       } else {
-        await User.deleteMany({ _id: { $in: thought.users } });
-        res.json({ message: 'Thought and users deleted!' });
+        // Ensure the 'users' property exists in the Thought schema or remove this line if unnecessary
+        await User.findOneAndUpdate(
+          { thoughts: req.params.thoughtId },
+          { $pull: { thoughts: req.params.thoughtId } },
+          { new: true }
+         );
+        res.json({ message: 'Thought deleted!' });
       }
       
     } catch (error: any) {
