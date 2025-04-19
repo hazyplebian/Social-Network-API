@@ -43,12 +43,23 @@ export const getThoughtById = async (req: Request, res: Response) => {
  * @returns 
 */
 export const createThought = async (req: Request, res: Response) => {
-    const { thought } = req.body;
     try {
-      const newThought = await Thought.create({
-        thought
+      const newThought = await Thought.create(req.body);{
+      };
+      const user = await User.findOneAndUpdate(
+        { _id: req.body.userId },
+        { $push: { thoughts: newThought._id } },
+        { new: true }
+      );
+      if (!user) {
+        res.status(404).json({
+          message: 'No user with this id!'
+        });
+      }
+      res.json({
+        message: 'Thought created successfully!',
+        thought: newThought
       });
-      res.status(201).json(newThought);
     } catch (error: any) {
       res.status(400).json({
         message: error.message
@@ -110,3 +121,39 @@ export const deleteThought = async (req: Request, res: Response) => {
       });
     }
   };
+
+  export const addReaction = async (req: Request, res: Response) => {
+    try {
+      const thought = await Thought.findOneAndUpdate(
+        { _id: req.params.thoughtId },
+        { $addToSet: { reactions: req.body } },
+        { new: true }
+      );
+      if (!thought) {
+        res.status(404).json({ message: 'No thought with this id!' });
+      }
+      res.json(thought);
+    } catch (error: any) {
+      res.status(400).json({
+        message: error.message
+      });
+    }
+  }
+
+  export const removeReaction = async (req: Request, res: Response) => {
+    try {
+      const thought = await Thought.findOneAndUpdate(
+        { _id: req.params.thoughtId },
+        { $pull: { reactions: { reactionId: req.params.reactionId } } },
+        { new: true }
+      );
+      if (!thought) {
+        res.status(404).json({ message: 'No thought with this id!' });
+      }
+      res.json({ message: 'Reaction deleted!' });
+    } catch (error: any) {
+      res.status(400).json({
+        message: error.message
+      });
+    }
+  }

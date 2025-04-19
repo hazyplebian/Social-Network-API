@@ -5,20 +5,18 @@ import {
   getUserById,
   createUser,
   deleteUser,
-  addReaction,
-  removeReaction,
+  addFriend,
+  removeFriend,
+  updateUser,
 } from '../../controllers/userController.js';
 
 // /api/users
 router.route('/').get(getAllUsers).post(createUser);
 
-// /api/user/:usertId
-router.route('/:userId').get(getUserById).delete(deleteUser);
+// /api/users/:usertId
+router.route('/:userId').get(getUserById).put(updateUser).delete(deleteUser);
 
-// /api/users/:userId/reactions
-router.route('/:userId/reactions').post(addReaction);
-
-// /api/users/:userId/reactions/:reactionId
-router.route('/:userId/reaction/:reactionId').delete(removeReaction);
+// /api/user/:userId/friends/:friendId
+router.route('/:userId/friends/:friendId').post(addFriend).delete(removeFriend);
 
 export { router as userRouter} ;

@@ -128,7 +128,7 @@ export const removeReaction = async (req, res) => {
         if (!thought) {
             res.status(404).json({ message: 'No thought with this id!' });
         }
-        res.json(thought);
+        res.json({ message: 'Reaction deleted!' });
     }
     catch (error) {
         res.status(400).json({

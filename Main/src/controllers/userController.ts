@@ -91,6 +91,23 @@ export const createUser = async (req: Request, res: Response) => {
  * @returns string 
 */
 
+export const updateUser = async (req: Request, res: Response) => {
+    try {
+        const user = await User.findOneAndUpdate(
+            { _id: req.params.userId },
+            { $set: req.body },
+            { runValidators: true, new: true }
+        );
+
+        if (!user) {
+            res.status(404).json({ message: 'No user found with that ID :(' });
+        }
+        res.json(user);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
+    }
+}
 export const deleteUser = async (req: Request, res: Response) => {
     try {
         const user = await User.findOneAndDelete({ _id: req.params.userId });
@@ -125,51 +142,37 @@ export const deleteUser = async (req: Request, res: Response) => {
  * @returns 
 */
 
-export const addReaction = async (req: Request, res: Response) => {
-    console.log('You are adding an reaction');
-    console.log(req.body);
+export const addFriend = async (req: Request, res: Response) => {
     try {
         const user = await User.findOneAndUpdate(
             { _id: req.params.userId },
-            { $addToSet: { reaction: req.body } },
-            { runValidators: true, new: true }
+            { $addToSet: { friends: req.params.friendId } },
+            { new: true }
         );
 
         if (!user) {
-            res
-                .status(404)
-                .json({ message: 'No user found with that ID :(' });
+            res.status(404).json({ message: 'No user found with that ID :(' });
         }
-
         res.json(user);
     } catch (err) {
+        console.log(err);
         res.status(500).json(err);
     }
 }
 
-/**
- * 
- * @param string 
- * @param string
- * @returns 
-*/
-
-export const removeReaction = async (req: Request, res: Response) => {
+export const removeFriend = async (req: Request, res: Response) => {
     try {
         const user = await User.findOneAndUpdate(
             { _id: req.params.userId },
-            { $pull: { reaction: { reactionId: req.params.reactionId } } },
-            { runValidators: true, new: true }
+            { $pull: { friends: req.params.friendId } },
+            { new: true }
         );
-
         if (!user) {
-            res
-                .status(404)
-                .json({ message: 'No user found with that ID :(' });
+            res.status(404).json({ message: 'No user found with that ID :(' });
         }
-
         res.json(user);
     } catch (err) {
+        console.log(err);
         res.status(500).json(err);
     }
 }
